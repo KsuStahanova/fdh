@@ -1,0 +1,59 @@
+//создания аннотаций для  ORM 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface Entity {
+    String name();
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface Id {
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface Table {
+    String name();
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface Column {
+    String name();
+    boolean nullable() default true;
+}
+
+
+
+// ORMсущност
+
+
+@Entity(name = "User")
+@Table(name = "users")
+public class User {
+    @Id
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "username", nullable = false)
+    private String username;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+}
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+public class Main {
+    public static void main(String[] args) {
+        String jdbcURL = "";
+        String username = "your_username";
+        String password = "your_password";
